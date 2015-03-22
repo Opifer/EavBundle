@@ -80,6 +80,18 @@ class Value implements ValueInterface
     }
 
     /**
+     * Set id
+     * @param integer $id Id of choice
+     * @return ValueInterface
+     */
+    public function setId($id=null)
+    {
+        $this->id = $id;
+        
+        return $this;
+    }
+
+    /**
      * Get id
      *
      * @return integer
