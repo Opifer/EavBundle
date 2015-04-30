@@ -37,7 +37,7 @@ class Template implements TemplateInterface
      *
      * @ORM\Column(name="name", type="string", length=128)
      *
-     * @Assert\Regex("/^[a-z-_]+$/")
+     * @Assert\Regex("/^[a-zA-Z-_]+$/")
      */
     protected $name;
 
