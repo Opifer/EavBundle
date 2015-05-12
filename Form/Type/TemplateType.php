@@ -12,6 +12,12 @@ class TemplateType extends AbstractType
 {
 
     /**
+     *
+     * @var array 
+     */
+    private $entities;
+
+    /**
      * @var  Symfony\Bundle\FrameworkBundle\Translation\Translator
      */
     protected $translator;
@@ -33,12 +39,14 @@ class TemplateType extends AbstractType
      * @param TranslatorInterface $translator
      * @param AttributeType       $attributeType
      * @param string              $templateClass
+     * @param array               $entities
      */
-    public function __construct(TranslatorInterface $translator, AttributeType $attributeType, $templateClass)
+    public function __construct(TranslatorInterface $translator, AttributeType $attributeType, $templateClass, $entities)
     {
         $this->translator    = $translator;
         $this->attributeType = $attributeType;
         $this->templateClass = $templateClass;
+        $this->entities = $entities;
     }
 
 
@@ -69,7 +77,19 @@ class TemplateType extends AbstractType
         ])->add('presentation', 'presentationeditor', [
             'label' => $this->translator->trans('template.presentation'),
             'attr'  => [ 'help_text' => $this->translator->trans('form.presentation.help_text') ]
-        ])->add('attributes', 'bootstrap_collection', [
+        ]);
+        
+        if($this->entities['post'] == $builder->getData()->getObjectClass()) {
+            $builder->add('postNotify', 'email', [
+                'label' => $this->translator->trans('template.post_notify'),
+                'attr'  => [
+                    'placeholder' => $this->translator->trans('form.post_notify.placeholder'),
+                    'help_text' => $this->translator->trans('form.post_notify.help_text')
+                ]
+            ]);
+        }
+        
+        $builder->add('attributes', 'bootstrap_collection', [
             'allow_add'    => true,
             'allow_delete' => true,
             'type'         => $this->attributeType
