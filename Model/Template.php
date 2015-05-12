@@ -73,6 +73,17 @@ class Template implements TemplateInterface
      * @ORM\ManyToMany(targetEntity="Opifer\EavBundle\Model\AttributeInterface", mappedBy="allowedTemplates")
      **/
     protected $allowedInAttributes;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="post_notify", type="string", length=255, nullable=true)
+     *
+     * @Assert\Email(
+     *      message = "The email '{{ value }}' is not a valid email."
+     * )
+     */
+    protected $postNotify;
 
 
     /**
@@ -297,5 +308,30 @@ class Template implements TemplateInterface
         $this->allowedInAttributes = $allowedInAttributes;
 
         return $this;
+    }
+    
+    /**
+     * Set postNotify
+     *
+     * @param  string $postNotify
+     *
+     * @return Template
+     */
+    public function setPostNotify($postNotify)
+    {
+        $this->postNotify = $postNotify;
+
+        return $this;
+    }
+
+
+    /**
+     * Get postNotify
+     *
+     * @return string
+     */
+    public function getPostNotify()
+    {
+        return $this->postNotify;
     }
 }

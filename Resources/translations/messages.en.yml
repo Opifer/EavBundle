@@ -11,6 +11,7 @@ template:
     object_class: Object Class
     presentation: Presentation
     success:  Template was saved successfully!
+    post_notify: E-mail notification
 form:
     description:
         help_text: ""
@@ -32,3 +33,6 @@ form:
         help_text: ""
     allowed_templates:
         help_text: ""
+    post_notify:
+        placeholder: "Enter recipients email address"
+        help_text: "Send notification to specified email address"
