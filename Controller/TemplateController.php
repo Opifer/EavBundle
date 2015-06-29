@@ -22,11 +22,21 @@ class TemplateController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $templates = $this->get('opifer.eav.template_manager')->getRepository()
-            ->findByRequest($request);
+        if ($request->get('attribute')) {
+            $attribute = $this->get('opifer.eav.attribute_manager')->getRepository()
+                ->find($request->get('attribute'));
+
+            if ($attribute->getAllowedTemplates()->count() === 0) {
+                // Remove attribute from request because we want all templates if this attribute doesn't
+                // have any allowed templates.
+                $request->query->remove('attribute');
+            }
+        }
+
+        $templates = $this->get('opifer.eav.template_manager')->getRepository()->findByRequest($request);
 
         $data = $this->get('jms_serializer')->serialize($templates, 'json');
 
-        return new Response($data, 200, ['Content-Type' => 'application/json']);
+        return new Response($data, 200, [ 'Content-Type' => 'application/json' ]);
     }
 }

@@ -14,6 +14,7 @@ use Opifer\EavBundle\Validator\Constraints as OpiferAssert;
  */
 class Template implements TemplateInterface
 {
+
     /**
      * @var integer
      *
@@ -27,7 +28,6 @@ class Template implements TemplateInterface
      * @var string
      *
      * @ORM\Column(name="displayName", type="string", length=255)
-     *
      * @Assert\NotBlank()
      */
     protected $displayName;
@@ -37,7 +37,7 @@ class Template implements TemplateInterface
      *
      * @ORM\Column(name="name", type="string", length=128)
      *
-     * @Assert\NotBlank()
+     * @Assert\Regex("/^[a-z-_]+$/")
      */
     protected $name;
 
@@ -68,11 +68,20 @@ class Template implements TemplateInterface
     protected $presentation;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Opifer\EavBundle\Model\AttributeInterface", mappedBy="allowedTemplates")
+     **/
+    protected $allowedInAttributes;
+
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->attributes = new ArrayCollection();
+        $this->allowedInAttributes = new ArrayCollection();
     }
 
     /**
@@ -88,7 +97,8 @@ class Template implements TemplateInterface
     /**
      * Set objectClass
      *
-     * @param  string   $objectClass
+     * @param  string $objectClass
+     *
      * @return Template
      */
     public function setObjectClass($objectClass)
@@ -97,6 +107,7 @@ class Template implements TemplateInterface
 
         return $this;
     }
+
 
     /**
      * Get objectClass
@@ -108,10 +119,12 @@ class Template implements TemplateInterface
         return $this->objectClass;
     }
 
+
     /**
      * Set name
      *
-     * @param  string   $name
+     * @param  string $name
+     *
      * @return Template
      */
     public function setName($name)
@@ -120,6 +133,7 @@ class Template implements TemplateInterface
 
         return $this;
     }
+
 
     /**
      * Get name
@@ -131,10 +145,12 @@ class Template implements TemplateInterface
         return $this->name;
     }
 
+
     /**
      * Set displayName
      *
-     * @param  string   $displayName
+     * @param  string $displayName
+     *
      * @return Template
      */
     public function setDisplayName($displayName)
@@ -143,6 +159,7 @@ class Template implements TemplateInterface
 
         return $this;
     }
+
 
     /**
      * Get displayName
@@ -154,10 +171,12 @@ class Template implements TemplateInterface
         return $this->displayName;
     }
 
+
     /**
      * Add attributes
      *
      * @param  AttributeInterface $attributes
+     *
      * @return Template
      */
     public function addAttribute(AttributeInterface $attributes)
@@ -166,6 +185,7 @@ class Template implements TemplateInterface
 
         return $this;
     }
+
 
     /**
      * Remove attributes
@@ -177,6 +197,7 @@ class Template implements TemplateInterface
         $this->attributes->removeElement($attributes);
     }
 
+
     /**
      * Get attributes
      *
@@ -186,6 +207,7 @@ class Template implements TemplateInterface
     {
         return $this->attributes;
     }
+
 
     /**
      * Get an attribute by its name
@@ -205,10 +227,12 @@ class Template implements TemplateInterface
         return false;
     }
 
+
     /**
      * Set presentation
      *
-     * @param  string   $presentation
+     * @param  string $presentation
+     *
      * @return Template
      */
     public function setPresentation($presentation)
@@ -218,6 +242,7 @@ class Template implements TemplateInterface
         return $this;
     }
 
+
     /**
      * Get presentation
      *
@@ -226,5 +251,51 @@ class Template implements TemplateInterface
     public function getPresentation()
     {
         return $this->presentation;
+    }
+
+    /**
+     * Add allowed in attribute
+     *
+     * @param  AttributeInterface $attribute
+     *
+     * @return  TemplateInterface
+     */
+    public function addAllowedInAttribute(AttributeInterface $attribute)
+    {
+        $this->allowedInAttributes[] = $attribute;
+
+        return $this;
+    }
+
+    /**
+     * Remove allowed template
+     *
+     * @param AttributeInterface $attribute
+     */
+    public function removeAllowedInAttribute(AttributeInterface $attribute)
+    {
+        $this->allowedInAttributes->removeElement($attribute);
+    }
+
+    /**
+     * Get allowed in attributes
+     *
+     * @return ArrayCollection
+     */
+    public function getAllowedInAttributes()
+    {
+        return $this->allowedInAttributes;
+    }
+
+    /**
+     * @param ArrayCollection $allowedInAttributes
+     *
+     * @return Template
+     */
+    public function setAllowedInAttributes(ArrayCollection $allowedInAttributes)
+    {
+        $this->allowedInAttributes = $allowedInAttributes;
+
+        return $this;
     }
 }

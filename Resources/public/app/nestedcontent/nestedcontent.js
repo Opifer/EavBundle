@@ -28,7 +28,8 @@ angular.module('OpiferNestedContent', ['ui.sortable'])
             template: tpl,
             scope: {
                 ids: '@',
-                attribute: '@'
+                attribute: '@',
+                attributeId: '@'
             },
             link: function(scope, element, attrs) {
                 scope.addSubject = function() {
@@ -48,7 +49,7 @@ angular.module('OpiferNestedContent', ['ui.sortable'])
             controller: function($scope, $http, $attrs, TemplateService) {
                 // Query all available templates to make them available in the
                 // select field.
-                $scope.templates = TemplateService.index();
+                $scope.templates = TemplateService.index({attribute: $scope.attributeId });
                 $scope.subjects = [];
 
                 // Retrieve all predefined nested content and add them to the
@@ -101,8 +102,7 @@ angular.module('OpiferNestedContent', ['ui.sortable'])
                 if (angular.isUndefined(scope.$parent.$parent.subject)) {
                     var parent = '';
                 } else {
-                    var parent = scope.$parent.$parent.subject.name;
-                    //console.log(parent);
+                    var parent = element.parent().parent().parent().find('input')[0].name;
                 }
 
                 // Request the form template and compile it
@@ -116,10 +116,6 @@ angular.module('OpiferNestedContent', ['ui.sortable'])
                     scope.subject.form = data.form;
                     scope.subject.data = data.content;
                     scope.subject.name = data.name;
-
-                    if (scope.subject.data.coverImage) {
-                        scope.subject.data.coverImage = Routing.generate('liip_imagine_filter', {'path':  scope.subject.data.coverImage, 'filter' : 'medialibrary'});
-                    }
 
                     // If the subject's name is not an ID, it means it's a new nested content
                     // form, so don't hide it.
