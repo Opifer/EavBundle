@@ -1,4 +1,5 @@
 parameters:
+    opifer.eav.attachment_value_provider.class: Opifer\EavBundle\ValueProvider\AttachmentValueProvider
     opifer.eav.boolean_value_provider.class: Opifer\EavBundle\ValueProvider\BooleanValueProvider
     opifer.eav.checklist_value_provider.class: Opifer\EavBundle\ValueProvider\ChecklistValueProvider
     opifer.eav.radio_value_provider.class: Opifer\EavBundle\ValueProvider\RadioValueProvider
@@ -12,6 +13,11 @@ parameters:
     opifer.eav.twitter_value_provider.class: Opifer\EavBundle\ValueProvider\TwitterValueProvider
 
 services:
+    opifer.eav.attachment_value_provider:
+        class: %opifer.eav.attachment_value_provider.class%
+        tags:
+            - { name: opifer.eav.value_provider, alias: attachment }
+
     opifer.eav.boolean_value_provider:
         class: %opifer.eav.boolean_value_provider.class%
         tags:
